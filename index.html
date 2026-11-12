@@ -1,1 +1,107 @@
 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TITAN AI PRO</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#080d14;color:#e8f0f7;font-family:Arial,sans-serif}
+header{padding:20px 5%;border-bottom:1px solid #1b2938;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:23px;font-weight:900;letter-spacing:2px}
+.logo span{color:#00e6a0}
+.status{color:#00e6a0;font-size:12px}
+main{max-width:1250px;margin:30px auto;padding:0 18px}
+h2{font-size:19px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.card,.panel{background:#101925;border:1px solid #1d2b3b;border-radius:12px;padding:18px}
+.small{font-size:12px;color:#8293a7}
+.value{font-size:23px;font-weight:bold;margin-top:12px}
+.green{color:#00e6a0}
+.yellow{color:#ffc857}
+.layout{display:grid;grid-template-columns:2fr 1fr;gap:15px;margin-top:18px}
+canvas{width:100%;height:300px;display:block}
+.indicators{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:15px}
+.ind{background:#0a121d;padding:13px;border-radius:8px}
+.signal{text-align:center;padding:24px;background:#0a121d;border-radius:10px;margin-top:15px}
+.signal strong{font-size:30px;color:#ffc857}
+button{background:#00c98c;color:#00150e;border:0;padding:12px 18px;border-radius:7px;font-weight:bold;cursor:pointer;margin-top:15px}
+footer{text-align:center;color:#65768a;font-size:11px;padding:30px}
+@media(max-width:750px){.cards{grid-template-columns:repeat(2,1fr)}.layout{grid-template-columns:1fr}.indicators{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+ <div class="logo">TITAN <span>AI PRO</span></div>
+ <div class="status">● PAINEL ONLINE</div>
+</header>
+<main>
+ <h2>Terminal de análise de mercado</h2>
+ <p class="small">Monitoramento técnico · Protótipo demonstrativo</p>
+ <section class="cards">
+  <div class="card"><div class="small">ATIVO</div><div class="value">EUR/USD</div></div>
+  <div class="card"><div class="small">PERÍODO</div><div class="value">1 MIN</div></div>
+  <div class="card"><div class="small">TENDÊNCIA</div><div class="value green">ALTA</div></div>
+  <div class="card"><div class="small">MODO</div><div class="value yellow">DEMO</div></div>
+ </section>
+ <section class="layout">
+  <div class="panel">
+   <h2>Gráfico EUR/USD</h2>
+   <div class="small">Velas ilustrativas — dados não conectados ao mercado</div>
+   <canvas id="chart"></canvas>
+   <div class="indicators">
+    <div class="ind"><div class="small">EMA 9</div><b>1.0842</b></div>
+    <div class="ind"><div class="small">EMA 21</div><b>1.0838</b></div>
+    <div class="ind"><div class="small">EMA 50</div><b>1.0831</b></div>
+    <div class="ind"><div class="small">RSI</div><b>58.4</b></div>
+    <div class="ind"><div class="small">MACD</div><b class="green">Positivo</b></div>
+    <div class="ind"><div class="small">ANÁLISE</div><b>Demonstrativa</b></div>
+   </div>
+  </div>
+  <div class="panel">
+   <h2>Central de sinais</h2>
+   <div class="signal">
+    <div class="small">SINAL DEMONSTRATIVO</div>
+    <strong>AGUARDAR</strong>
+    <p class="small">Sem dados reais conectados. Nenhuma entrada recomendada.</p>
+   </div>
+   <h2>Indicadores técnicos</h2>
+   <p>EMA 9 / 21 / 50 <span class="green">●</span></p>
+   <p>RSI <span class="yellow">●</span></p>
+   <p>MACD <span class="green">●</span></p>
+   <p>Bollinger Bands <span class="green">●</span></p>
+   <button onclick="alert('A conexão com uma fonte de dados autorizada será configurada na próxima etapa.')">CONFIGURAR DADOS</button>
+  </div>
+ </section>
+ <footer>TITAN AI PRO WEB · VERSÃO INICIAL · MODO DEMONSTRAÇÃO</footer>
+</main>
+<script>
+const c=document.getElementById("chart"),ctx=c.getContext("2d");
+function draw(){
+ const w=c.clientWidth,h=300,d=window.devicePixelRatio||1;
+ c.width=w*d;c.height=h*d;ctx.scale(d,d);
+ ctx.clearRect(0,0,w,h);
+ for(let i=0;i<6;i++){
+  let y=20+i*48;ctx.strokeStyle="#233244";
+  ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();
+ }
+ let price=145,values=[];
+ for(let i=0;i<48;i++){
+  price+=(Math.sin(i*.8)*2)+(Math.cos(i*.3)*1.5);
+  values.push(price);
+ }
+ values.forEach((v,i)=>{
+  let x=12+i*(w-24)/48;
+  let y=245-v;
+  let up=i===0||v>=values[i-1];
+  ctx.strokeStyle=up?"#00d99a":"#ff647c";
+  ctx.fillStyle=ctx.strokeStyle;
+  ctx.beginPath();ctx.moveTo(x,y-13);ctx.lineTo(x,y+13);ctx.stroke();
+  ctx.fillRect(x-3,y-7,6,14);
+ });
+}
+draw();window.addEventListener("resize",draw);
+</script>
+</body>
+</html>
